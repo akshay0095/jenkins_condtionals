@@ -1,0 +1,46 @@
+pipeline {
+    agent any
+    environment {
+        CC = 'gcc'
+    }
+    stages {
+        stage {
+            stage('Checking compiler') {
+                when {
+                    expression { return CC == 'gcc'}
+                }
+                steps {
+                    sh 'printenv'
+                    echo "compiler version checked successfully"
+                }
+            }
+            stage('Equals') {
+                when {
+                    equals expected: 5 , actual: currentBuild.number
+                }
+                steps {
+                    echo " build number verified "
+                }
+            }
+            stage('build with branch') {
+                when {
+                    branch pattern: "[cC]onditionals", comparator: "REGEXP"
+                }
+                steps {
+                    echo "code is building"
+                }
+            }
+            stage('All true') {
+                when {
+                    allOf {
+                        branch 'conditionals'
+                        environment name: 'CC', value: 'gcc'
+                    }
+                }
+                steps {
+                    echo " Compiling and building "
+                }
+            }
+        }
+    }
+}
