@@ -4,7 +4,6 @@ pipeline {
         CC = 'gcc'
     }
     stages {
-        stage {
             stage('Checking compiler') {
                 when {
                     expression { return CC == 'gcc'}
@@ -41,6 +40,6 @@ pipeline {
                     echo " Compiling and building "
                 }
             }
-        }
+        
     }
 }
